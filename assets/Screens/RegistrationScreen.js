@@ -9,7 +9,6 @@ import {
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
-  Pressable,
   StatusBar,
 } from "react-native";
 
