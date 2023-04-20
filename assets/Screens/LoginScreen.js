@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-// import Icon from "react-native-vector-icons/Ionicons";
+import Icon from "react-native-vector-icons/Ionicons";
 import {
   View,
   TextInput,
@@ -11,24 +11,23 @@ import {
   StyleSheet,
   TouchableOpacity,
   StatusBar,
-  Image,
   Dimensions,
   ScrollView,
 } from "react-native";
 
 const initialState = {
-  login: "",
   email: "",
   password: "",
 };
 
-export default function RegistrationScreen({ onLayout }) {
+export default function LoginScreen({ onLayout }) {
   const [isFocused, setIsFocused] = useState(false);
   const [state, setState] = useState(initialState);
   const [showPassword, setShowPassword] = useState(true);
   const [dimensions, setDimensions] = useState(Dimensions.get("window").width);
   const landscapeOrientation =
     Dimensions.get("window").width > Dimensions.get("window").height;
+
   useEffect(() => {
     const onChange = () => {
       const width = Dimensions.get("window").width;
@@ -37,7 +36,6 @@ export default function RegistrationScreen({ onLayout }) {
     const subscription = Dimensions.addEventListener("change", onChange);
     return () => subscription?.remove();
   }, []);
-
   function handleFocus() {
     setIsFocused(true);
   }
@@ -63,14 +61,11 @@ export default function RegistrationScreen({ onLayout }) {
           source={require("../images/BG.jpg")}
         >
           <KeyboardAvoidingView
+            style={{
+              flex: 2 / 3,
+            }}
             behavior={Platform.OS == "ios" ? "padding" : "height"}
-            style={{ flex: 2 / 3 }}
           >
-            {!landscapeOrientation && (
-              <View style={styles.wrapper}>
-                <Image style={styles.avatar}></Image>
-              </View>
-            )}
             <ScrollView
               style={{
                 ...styles.formContainer,
@@ -78,26 +73,8 @@ export default function RegistrationScreen({ onLayout }) {
                 paddingHorizontal: landscapeOrientation ? 100 : 16,
               }}
             >
-              {/* <TouchableOpacity style={styles.addBtn}>
-              <Icon name="add" color={"#FF6C00"} size={30} />
-            </TouchableOpacity> */}
-              <Text style={styles.title}>Registration</Text>
+              <Text style={styles.title}>Log in</Text>
 
-              <TextInput
-                placeholder="Login"
-                placeholderTextColor={"#BDBDBD"}
-                keyboardType={"default"}
-                value={state.login}
-                style={[
-                  styles.input,
-                  { borderColor: isFocused ? "#FF6C00" : "#E8E8E8" },
-                ]}
-                onFocus={handleFocus}
-                onEndEditing={handleBlur}
-                onChangeText={(value) =>
-                  setState((prevState) => ({ ...prevState, login: value }))
-                }
-              />
               <TextInput
                 placeholder="Email"
                 placeholderTextColor={"#BDBDBD"}
@@ -141,15 +118,15 @@ export default function RegistrationScreen({ onLayout }) {
                 style={styles.button}
                 onPress={submitHandler}
               >
-                <Text style={styles.buttonTitle}>Register</Text>
+                <Text style={styles.buttonTitle}>Log in</Text>
               </TouchableOpacity>
 
               <View style={styles.linkContainer}>
                 <TouchableOpacity>
-                  <Text style={styles.link}>You already have account? </Text>
+                  <Text style={styles.link}>You don't have account? </Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                  <Text style={styles.link}>Log in</Text>
+                  <Text style={styles.link}>Register</Text>
                 </TouchableOpacity>
               </View>
             </ScrollView>
@@ -172,45 +149,14 @@ const styles = StyleSheet.create({
   },
 
   formContainer: {
-    flex: 2 / 3,
     backgroundColor: "#FFFFFF",
-    width: "100%",
-    // paddingLeft: 16,
-    // paddingRight: 16,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
   },
-  wrapper: {
-    position: "absolute",
-    top: -60,
-    left: "50%",
-    transform: [{ translateX: -55 }],
-    width: 120,
-    height: 120,
-    backgroundColor: "#F6F6F6",
-    borderRadius: 16,
-    zIndex: 99,
-  },
-  // addBtn: {
-  //   position: "absolute",
-  //   right: 125,
-  //   top: 20,
-  //   zIndex: 150,
-  //   // display: "flex",
-  //   // alignItems: "center",
-  //   // justifyContent: "center",
-  //   // flex: 1,
-  //   width: 25,
-  //   height: 25,
-  //   borderWidth: 1,
-  //   borderColor: "#FF6C00",
-  //   borderRadius: "50%",
-  //   backgroundColor: "transparent",
-  // },
 
   title: {
     marginBottom: 32,
-    marginTop: 92,
+    marginTop: 32,
     fontWeight: 500,
     fontSize: 30,
     lineHeight: 35,
@@ -245,7 +191,7 @@ const styles = StyleSheet.create({
   },
   hint: {
     position: "absolute",
-    top: 307,
+    top: 180,
     right: 32,
   },
   hintText: {

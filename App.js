@@ -3,8 +3,10 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import RegistationScreen from "./assets/Screens/RegistrationScreen";
-// SplashScreen.preventAutoHideAsync();
+import RegistrationScreen from "./assets/Screens/RegistrationScreen";
+import LoginScreen from "./assets/Screens/LoginScreen";
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -24,24 +26,25 @@ export default function App() {
   }
 
   return (
-    <RegistationScreen />
-    // <View style={styles.container}>
-    //   <Text style={styles.text}>FUCKING REACT-NATIVE!!!</Text>
+    // <RegistrationScreen onLayout={onLayoutRootView} />
+    <LoginScreen onLayout={onLayoutRootView} />
+    // <View style={styles.container} onLayout={onLayoutRootView}>
+    //   <Text style={styles.text}>whatever</Text>
     //   <StatusBar style="auto" />
     // </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    color: "red",
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "#fff",
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
+//   text: {
+//     color: "red",
+//     fontSize: 20,
+//     fontWeight: "bold",
+//   },
+// });
