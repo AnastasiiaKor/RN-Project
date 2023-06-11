@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-// import Icon from "react-native-vector-icons/Ionicons";
+import Icon from "react-native-vector-icons/AntDesign";
 import {
   View,
   TextInput,
@@ -10,11 +10,11 @@ import {
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
-  StatusBar,
   Image,
   Dimensions,
   ScrollView,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const initialState = {
   login: "",
@@ -22,8 +22,12 @@ const initialState = {
   password: "",
 };
 
-export default function RegistrationScreen({ onLayout }) {
-  const [isFocused, setIsFocused] = useState(false);
+function RegistrationScreen({ onLayout }) {
+  const [isFocused, setIsFocused] = useState({
+    loginInput: false,
+    emailInput: false,
+    passwordInput: false,
+  });
   const [state, setState] = useState(initialState);
   const [showPassword, setShowPassword] = useState(true);
   const [dimensions, setDimensions] = useState(Dimensions.get("window").width);
@@ -38,29 +42,21 @@ export default function RegistrationScreen({ onLayout }) {
     return () => subscription?.remove();
   }, []);
 
-  function handleFocus() {
-    setIsFocused(true);
-  }
-
-  function handleBlur() {
-    setIsFocused(false);
-  }
-
   function submitHandler() {
     console.log(state);
     setState(initialState);
+    navigation.navigate("Home", { state });
   }
   function showPasswordHandler() {
-    setShowPassword(!showPassword);
+    setShowPassword(false);
   }
-
+  const navigation = useNavigation();
   return (
     <View style={styles.container} onLayout={onLayout}>
-      <StatusBar barStyle={"dark-content"} />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ImageBackground
           style={styles.backgroundImage}
-          source={require("../images/BG.jpg")}
+          source={require("../assets/images/BG.jpg")}
         >
           <KeyboardAvoidingView
             behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -69,6 +65,9 @@ export default function RegistrationScreen({ onLayout }) {
             {!landscapeOrientation && (
               <View style={styles.wrapper}>
                 <Image style={styles.avatar}></Image>
+                <TouchableOpacity style={styles.addBtn} activeOpacity={0.6}>
+                  <Icon name="pluscircleo" color={"#FF6C00"} size={25} />
+                </TouchableOpacity>
               </View>
             )}
             <ScrollView
@@ -78,9 +77,6 @@ export default function RegistrationScreen({ onLayout }) {
                 paddingHorizontal: landscapeOrientation ? 100 : 16,
               }}
             >
-              {/* <TouchableOpacity style={styles.addBtn}>
-              <Icon name="add" color={"#FF6C00"} size={30} />
-            </TouchableOpacity> */}
               <Text style={styles.title}>Registration</Text>
 
               <TextInput
@@ -90,10 +86,14 @@ export default function RegistrationScreen({ onLayout }) {
                 value={state.login}
                 style={[
                   styles.input,
-                  { borderColor: isFocused ? "#FF6C00" : "#E8E8E8" },
+                  { borderColor: isFocused.loginInput ? "#FF6C00" : "#E8E8E8" },
                 ]}
-                onFocus={handleFocus}
-                onEndEditing={handleBlur}
+                onFocus={() => {
+                  setIsFocused({ ...isFocused, loginInput: true });
+                }}
+                onBlur={() => {
+                  setIsFocused({ ...isFocused, loginInput: false });
+                }}
                 onChangeText={(value) =>
                   setState((prevState) => ({ ...prevState, login: value }))
                 }
@@ -105,10 +105,14 @@ export default function RegistrationScreen({ onLayout }) {
                 value={state.email}
                 style={[
                   styles.input,
-                  { borderColor: isFocused ? "#FF6C00" : "#E8E8E8" },
+                  { borderColor: isFocused.emailInput ? "#FF6C00" : "#E8E8E8" },
                 ]}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
+                onFocus={() => {
+                  setIsFocused({ ...isFocused, emailInput: true });
+                }}
+                onBlur={() => {
+                  setIsFocused({ ...isFocused, emailInput: false });
+                }}
                 onChangeText={(value) =>
                   setState((prevState) => ({ ...prevState, email: value }))
                 }
@@ -121,35 +125,42 @@ export default function RegistrationScreen({ onLayout }) {
                 value={state.password}
                 style={[
                   styles.inputPS,
-                  { borderColor: isFocused ? "#FF6C00" : "#E8E8E8" },
+                  {
+                    borderColor: isFocused.passwordInput
+                      ? "#FF6C00"
+                      : "#E8E8E8",
+                  },
                 ]}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
+                onFocus={() => {
+                  setIsFocused({ ...isFocused, passwordInput: true });
+                }}
+                onBlur={() => {
+                  setIsFocused({ ...isFocused, passwordInput: false });
+                }}
                 onChangeText={(value) =>
                   setState((prevState) => ({ ...prevState, password: value }))
                 }
               />
               <TouchableOpacity
-                activeOpacity={0.4}
                 style={styles.hint}
                 onPress={showPasswordHandler}
+                activeOpacity={0.8}
               >
                 <Text style={styles.hintText}>Show</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                activeOpacity={0.8}
                 style={styles.button}
                 onPress={submitHandler}
+                activeOpacity={0.8}
               >
                 <Text style={styles.buttonTitle}>Register</Text>
               </TouchableOpacity>
 
               <View style={styles.linkContainer}>
-                <TouchableOpacity>
-                  <Text style={styles.link}>You already have account? </Text>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <Text style={styles.link}>Log in</Text>
+                <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                  <Text style={styles.link} underlayColor="transparent">
+                    You already have account? Log in
+                  </Text>
                 </TouchableOpacity>
               </View>
             </ScrollView>
@@ -175,8 +186,6 @@ const styles = StyleSheet.create({
     flex: 2 / 3,
     backgroundColor: "#FFFFFF",
     width: "100%",
-    // paddingLeft: 16,
-    // paddingRight: 16,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
   },
@@ -191,22 +200,15 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     zIndex: 99,
   },
-  // addBtn: {
-  //   position: "absolute",
-  //   right: 125,
-  //   top: 20,
-  //   zIndex: 150,
-  //   // display: "flex",
-  //   // alignItems: "center",
-  //   // justifyContent: "center",
-  //   // flex: 1,
-  //   width: 25,
-  //   height: 25,
-  //   borderWidth: 1,
-  //   borderColor: "#FF6C00",
-  //   borderRadius: "50%",
-  //   backgroundColor: "transparent",
-  // },
+  addBtn: {
+    position: "absolute",
+    left: 108,
+    bottom: 14,
+    width: 25,
+    height: 25,
+    borderRadius: "50%",
+    backgroundColor: "transparent",
+  },
 
   title: {
     marginBottom: 32,
@@ -279,3 +281,5 @@ const styles = StyleSheet.create({
     color: "#1B4371",
   },
 });
+
+export default RegistrationScreen;

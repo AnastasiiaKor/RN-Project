@@ -1,10 +1,18 @@
+import "react-native-gesture-handler";
 import { useCallback } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import RegistrationScreen from "./assets/Screens/RegistrationScreen";
-import LoginScreen from "./assets/Screens/LoginScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import RegistrationScreen from "./Screens/RegistrationScreen";
+import LoginScreen from "./Screens/LoginScreen";
+import PostsScreen from "./Screens/PostsScreen";
+import HomeScreen from "./Screens/HomeScreen";
+import CommentsScreen from "./Screens/CommentsScreen";
+import MapScreen from "./Screens/MapScreen";
+import ProfileScreen from "./Screens/ProfileScreen";
+import CreatePostScreen from "./Screens/CreatePostScreen";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,13 +33,26 @@ export default function App() {
     return null;
   }
 
+  const MainStack = createStackNavigator();
+
+  const screenOptions = {
+    headerStatusBarHeight: StatusBar.currentHeight,
+    header: () => <StatusBar style="dark" backgroundColor="transparent" />,
+  };
+
   return (
-    // <RegistrationScreen onLayout={onLayoutRootView} />
-    <LoginScreen onLayout={onLayoutRootView} />
-    // <View style={styles.container} onLayout={onLayoutRootView}>
-    //   <Text style={styles.text}>whatever</Text>
-    //   <StatusBar style="auto" />
-    // </View>
+    <NavigationContainer onReady={onLayoutRootView}>
+      <MainStack.Navigator screenOptions={screenOptions}>
+        <MainStack.Screen name="Registration" component={RegistrationScreen} />
+        <MainStack.Screen name="Login" component={LoginScreen} />
+        <MainStack.Screen name="Home" component={HomeScreen} />
+        <MainStack.Screen name="CreatePost" component={CreatePostScreen} />
+        <MainStack.Screen name="Posts" component={PostsScreen} />
+        <MainStack.Screen name="Profile" component={ProfileScreen} />
+        {/* <MapScreen onLayout={onLayoutRootView} /> */}
+        {/* <CommentsScreen onLayout={onLayoutRootView} /> */}
+      </MainStack.Navigator>
+    </NavigationContainer>
   );
 }
 
