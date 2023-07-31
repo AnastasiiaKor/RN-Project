@@ -31,6 +31,7 @@ function RegistrationScreen({ onLayout }) {
   const [state, setState] = useState(initialState);
   const [showPassword, setShowPassword] = useState(true);
   const [dimensions, setDimensions] = useState(Dimensions.get("window").width);
+  const navigation = useNavigation();
   const landscapeOrientation =
     Dimensions.get("window").width > Dimensions.get("window").height;
   useEffect(() => {
@@ -44,13 +45,14 @@ function RegistrationScreen({ onLayout }) {
 
   function submitHandler() {
     console.log(state);
+    navigation.navigate("Home", { email: state.email, login: state.login });
     setState(initialState);
-    navigation.navigate("Home", { state });
   }
+
   function showPasswordHandler() {
     setShowPassword(false);
   }
-  const navigation = useNavigation();
+
   return (
     <View style={styles.container} onLayout={onLayout}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

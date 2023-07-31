@@ -42,8 +42,8 @@ function LoginScreen() {
 
   function submitHandler() {
     console.log(state);
+    navigation.navigate("Home", { email: state.email });
     setState(initialState);
-    navigation.navigate("Home", { state });
   }
   function showPasswordHandler() {
     setShowPassword(false);

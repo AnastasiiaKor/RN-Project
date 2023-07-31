@@ -42,10 +42,19 @@ export default function App() {
 
   return (
     <NavigationContainer onReady={onLayoutRootView}>
-      <MainStack.Navigator screenOptions={screenOptions}>
+      <MainStack.Navigator
+        screenOptions={screenOptions}
+        initialRouteName="Login"
+      >
         <MainStack.Screen name="Registration" component={RegistrationScreen} />
+
         <MainStack.Screen name="Login" component={LoginScreen} />
-        <MainStack.Screen name="Home" component={HomeScreen} />
+        <MainStack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ title: "Posts " }}
+        />
+
         <MainStack.Screen name="CreatePost" component={CreatePostScreen} />
         <MainStack.Screen name="Posts" component={PostsScreen} />
         <MainStack.Screen name="Profile" component={ProfileScreen} />

@@ -6,14 +6,18 @@ import {
   Image,
   TextInput,
 } from "react-native";
+
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-function CreatePostScreen({ onLayout }) {
+function CreatePostScreen({ onLayout, navigation }) {
   return (
     <View style={styles.container} onLayout={onLayout}>
       <View style={styles.header}>
         <Text style={styles.title}>Create post</Text>
-        <TouchableOpacity style={styles.backBtn}>
+        <TouchableOpacity
+          style={styles.backBtn}
+          onPress={() => navigation.navigate("Posts")}
+        >
           <Icon
             name="keyboard-backspace"
             size={24}
@@ -72,7 +76,7 @@ const styles = StyleSheet.create({
     position: "relative",
     width: "100%",
     height: 240,
-    background: "#F6F6F6",
+    backgroundColor: "#F6F6F6",
     borderWidth: 1,
     borderColor: "#E8E8E8",
     borderRadius: 8,

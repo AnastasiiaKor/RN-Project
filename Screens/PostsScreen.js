@@ -2,8 +2,9 @@ import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 
-function PostsScreen({ login = "", email }) {
+function PostsScreen({ login, email }) {
   const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -18,8 +19,8 @@ function PostsScreen({ login = "", email }) {
       <View style={styles.section}>
         <Image style={styles.avatar} />
         <View>
-          <Text style={styles.name}>Lalal</Text>
-          <Text style={styles.email}>hdhdhdh</Text>
+          <Text style={styles.name}>{login}</Text>
+          <Text style={styles.email}>{email}</Text>
         </View>
       </View>
     </View>
@@ -28,6 +29,7 @@ function PostsScreen({ login = "", email }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#FFF",
   },
   header: {
     flex: 1 / 10,
